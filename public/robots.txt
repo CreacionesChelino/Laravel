@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://creacioneschelino.com.mx/public/sitemap.xml

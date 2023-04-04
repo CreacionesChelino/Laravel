@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
+class SessionsController extends Controller
+{
+    public function create()
+    {
+        return view('session.login-session');
+    }
+
+    public function store()
+    {
+        $attributes = request()->validate([
+            'email'=>'required|email',
+            'password'=>'required'
+        ]);
+
+        if(Auth::attempt($attributes))
+        {
+            session()->regenerate();
+            if(Auth::user()->role_id == 1){
+                return redirect('/dashboard')->with(['success'=>'Bienvenido de nuevo.']);
+            }else{
+                return redirect('/productos');
+            }
+        }
+        else{
+
+            return back()->withErrors(['email'=>'Tus credenciales de acceso son incorrectas.']);
+        }
+    }
+
+    public function destroy()
+    {
+
+        Auth::logout();
+
+        return redirect('/login')->with(['success'=>'Has cerrado sesion satisfactoriamente.']);
+    }
+}
